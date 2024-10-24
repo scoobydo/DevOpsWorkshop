@@ -61,9 +61,7 @@ module "eks" {
     cluster_version = var.cluster_version
 
     vpc_id          = var.vpc
-    subnet_ids      = [aws_subnet.shahar_subnet-a.id, aws_subnet.shahahr_subnet-b.id]
-
-    
+    subnet_ids = [aws_subnet.shahar_subnet-a.id, aws_subnet.shahar_subnet-b.id]
     eks_managed_node_group_defaults = {
       instance_types = ["t2.micro"]
       }
