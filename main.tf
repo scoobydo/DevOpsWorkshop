@@ -44,7 +44,7 @@ resource "aws_s3_bucket_policy" "shahar_bucket_policy" {
 
 resource "aws_eks_access_policy_association" "user_access" {
   for_each = toset(var.aws_iam_users)
-  cluster_name = var.cluster
+  cluster_name = var.cluster_name
   principal_arn = data.aws_iam_user.current_users[each.key].arn
   policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
 
@@ -57,11 +57,13 @@ module "eks" {
     source          = "terraform-aws-modules/eks/aws"
     version         = "20.24.0"
 
-    cluster_name    = var.cluster
+    cluster_name    = var.cluster_name
     cluster_version = var.cluster_version
 
     vpc_id          = var.vpc
     subnet_ids = [aws_subnet.shahar_subnet-a.id, aws_subnet.shahar_subnet-b.id]
+
+    cluster_endpoint_public_access = true
     eks_managed_node_group_defaults = {
       instance_types = ["t2.micro"]
       }
@@ -71,13 +73,13 @@ module "eks" {
             desired_capacity = 2
             max_capacity     = 2
             min_capacity     = 1
-
             instance_type   = "t2.micro"
         }
     }
-
-    
-    }
-
-    
-
+    access_entries = { for user_name in var.aws_iam_users:
+      user_name => { principal_arn = data.aws_iam_user.current_users[user_name].arn}
+    } 
+ }
+   output "user_arn" {
+      value = data.aws_iam_user.current_users["shahar-user"].arn
+}

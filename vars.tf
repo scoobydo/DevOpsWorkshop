@@ -24,12 +24,13 @@ variable "gateway_id" {
   default     = "nat-0440e3c0e49d26497"
 }
 
-variable "aws_iam_users" {
+ variable "aws_iam_users" {
   type        = list(string)
+  description = "this is list so if we want to give more user acc"
   default     = ["shahar-user"]  
  }
 
-variable "cluster" {
+  variable "cluster_name" {
   type        = string
   default     = "shahar-cluster"   
  }

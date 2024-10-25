@@ -2,6 +2,7 @@ data "aws_iam_user" "current_users" {
   for_each = toset(var.aws_iam_users)
   user_name = each.value
 }
+
 data "aws_iam_policy_document" "bucket_policy" {
   statement {
     sid    = "AllowSpasi"
@@ -9,7 +10,7 @@ data "aws_iam_policy_document" "bucket_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = var.aws_iam_users
+      identifiers = [for user in data.aws_iam_user.current_users : user.arn]  # Use user.arn directly
     }
 
     actions = [
