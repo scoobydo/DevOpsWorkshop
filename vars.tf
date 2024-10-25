@@ -24,12 +24,12 @@ variable "gateway_id" {
   default     = "nat-0440e3c0e49d26497"
 }
 
-variable "aws_iam_users" {
+ variable "aws_iam_users" {
   type        = list(string)
   default     = ["shahar-user"]  
  }
 
-variable "cluster" {
+  variable "cluster_name" {
   type        = string
   default     = "shahar-cluster"   
  }
