@@ -46,7 +46,7 @@ resource "aws_eks_access_policy_association" "user_access" {
   for_each = toset(var.aws_iam_users)
   cluster_name = var.cluster_name
   principal_arn = data.aws_iam_user.current_users[each.key].arn
-  policy_arn = "arn:aws:eks:eu-west-1:730335218716:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+  policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
 
   access_scope {
     type = "cluster"
@@ -73,14 +73,13 @@ module "eks" {
             desired_capacity = 2
             max_capacity     = 2
             min_capacity     = 1
-
             instance_type   = "t2.micro"
         }
     }
-
-    
-    }
-
-    output "user_arn" {
+    access_entries = { for user_name in var.aws_iam_users:
+      user_name => { principal_arn = data.aws_iam_user.current_users[user_name].arn}
+    } 
+ }
+   output "user_arn" {
       value = data.aws_iam_user.current_users["shahar-user"].arn
 }
