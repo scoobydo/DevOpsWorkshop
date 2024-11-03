@@ -20,7 +20,6 @@ resource "aws_route_table" "shahar_route_table" {
     cidr_block = "192.168.0.0/16"
     gateway_id = "local"
   }
-
   route {
     cidr_block = "0.0.0.0/0"
     nat_gateway_id = var.gateway_id
@@ -64,16 +63,19 @@ module "eks" {
     subnet_ids = [aws_subnet.shahar_subnet-a.id, aws_subnet.shahar_subnet-b.id]
 
     cluster_endpoint_public_access = true
+
+    cluster_addons = { coredns = { version = "v1.11.1-eksbuild.4" } 
+    aws-ebs-csi-driver = { version = "v1.35.0-eksbuild.1" } } 
     eks_managed_node_group_defaults = {
-      instance_types = ["t2.micro"]
+      instance_types = ["t2.small"]
       }
    
     eks_managed_node_groups = {
         shahar-nodegroup = {
             desired_capacity = 2
-            max_capacity     = 2
+            max_capacity     = 3
             min_capacity     = 1
-            instance_type   = "t2.micro"
+            instance_type   = "t2.small"
         }
     }
     access_entries = { for user_name in var.aws_iam_users:

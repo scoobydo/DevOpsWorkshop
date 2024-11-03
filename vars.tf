@@ -27,7 +27,7 @@ variable "gateway_id" {
  variable "aws_iam_users" {
   type        = list(string)
   description = "this is list so if we want to give more user acc"
-  default     = ["shahar-user"]  
+  default     = ["shahar-user", "yehiamc", "shaiga", "esterh"]  
  }
 
   variable "cluster_name" {
