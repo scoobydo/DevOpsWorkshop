@@ -1,37 +1,37 @@
 variable "region" {
   description = "The AWS region to deploy resources"
   type        = string
-  default     = "us-west-2"  # Default region
+  default     = "eu-west-1"  # Default region
 }
 
 variable "vpc" {
   description = "The VPC ID where resources will be deployed"
   type        = string
-  default     = "vpc-12345678"  # Replace with your default VPC ID
+  default     = "vpc-01b834daa2d67cdaa"  
 }
 
 variable "subnet_cidrs" {
   description = "List of CIDR blocks for subnets"
   type        = list(string)
-  default     = ["192.168.1.0/24", "192.168.2.0/24"]  # Example CIDR blocks
+  default     = ["192.168.20.0/24", "192.168.21.0/24"]  
 }
 
 variable "availability_zones" {
   description = "List of availability zones"
   type        = list(string)
-  default     = ["us-west-2a", "us-west-2b"]  # Example AZs
+  default     = ["eu-west-1a", "eu-west-1b"]  
 }
 
 variable "gateway_id" {
   description = "The ID of the NAT Gateway"
   type        = string
-  default     = "nat-12345678"  # Replace with your default NAT Gateway ID
+  default     = "nat-0440e3c0e49d2649"  
 }
 
 variable "aws_iam_users" {
   description = "List of IAM users who will have access to the EKS cluster"
   type        = list(string)
-  default     = ["user1", "user2"]  # Example IAM users
+  default     = ["shahar-user"]  
 }
 
 variable "allowed_principals" {
@@ -43,7 +43,7 @@ variable "allowed_principals" {
 variable "cluster_name" {
   description = "The name of the EKS cluster"
   type        = string
-  default     = "my-eks-cluster"  # Default cluster name
+  default     = "shahar-clusterr"  
 }
 
 variable "cluster_version" {
