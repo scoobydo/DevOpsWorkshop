@@ -1,87 +1,60 @@
-resource "aws_subnet" "shahar_subnet-a" {
-  vpc_id                  = var.vpc
-  tags                     ={ Name =  "shahar-subnet-a" }
-  cidr_block              = var.subnet_cidrs[0]
-  availability_zone       = var.availability_zones[0]
+resource "aws_subnet" "shoko_subnet-a" {
+  vpc_id            = var.vpc
+  tags              = { Name = "shoko-subnet-a" }
+  cidr_block        = var.subnet_cidrs[0]
+  availability_zone = var.availability_zones[0]
 }
 
-resource "aws_subnet" "shahar_subnet-b" {
-  vpc_id                  = var.vpc
-  tags                     ={ Name =  "shahar-subnet-b" }
-  cidr_block              = var.subnet_cidrs[1]
-  availability_zone       = var.availability_zones[1]
+resource "aws_subnet" "shoko_subnet-b" {
+  vpc_id            = var.vpc
+  tags              = { Name = "shoko-subnet-b" }
+  cidr_block        = var.subnet_cidrs[1]
+  availability_zone = var.availability_zones[1]
 }
 
-resource "aws_route_table" "shahar_route_table" {
+# Route Table
+resource "aws_route_table" "shoko_route_table" {
   vpc_id = var.vpc
-  tags                     ={ Name =  "shahar-route_table" }
-  
+  tags   = { Name = "shoko-route_table" }
+
   route {
-    cidr_block = "192.168.0.0/16"
-    gateway_id = "local"
+    cidr_block    = "192.168.0.0/16"
+    gateway_id    = "local"
   }
+
   route {
-    cidr_block = "0.0.0.0/0"
-    nat_gateway_id = var.gateway_id
+    cidr_block      = "0.0.0.0/0"
+    nat_gateway_id  = var.gateway_id
   }
 }
 
 resource "aws_route_table_association" "subnet_a_association" {
-  subnet_id      = aws_subnet.shahar_subnet-a.id
-  route_table_id = aws_route_table.shahar_route_table.id
+  subnet_id      = aws_subnet.shoko_subnet-a.id
+  route_table_id = aws_route_table.shoko_route_table.id
 }
 
 resource "aws_route_table_association" "subnet_b_association" {
-  subnet_id      = aws_subnet.shahar_subnet-b.id
-  route_table_id = aws_route_table.shahar_route_table.id
+  subnet_id      = aws_subnet.shoko_subnet-b.id
+  route_table_id = aws_route_table.shoko_route_table.id
 }
 
-resource "aws_s3_bucket_policy" "shahar_bucket_policy" {
-  bucket = "shahar-s3"
-  policy = data.aws_iam_policy_document.bucket_policy.json 
+resource "aws_s3_bucket_policy" "shoko_bucket_policy" {
+  bucket = "shoko-s3"
+  policy = data.aws_iam_policy_document.bucket_policy.json
 }
 
 resource "aws_eks_access_policy_association" "user_access" {
-  for_each = toset(var.aws_iam_users)
-  cluster_name = var.cluster_name
+  for_each      = toset(var.aws_iam_users)
+  cluster_name  = var.cluster_name
   principal_arn = data.aws_iam_user.current_users[each.key].arn
-  policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
 
   access_scope {
     type = "cluster"
   }
 }
 
-module "eks" {
-    source          = "terraform-aws-modules/eks/aws"
-    version         = "20.24.0"
-
-    cluster_name    = var.cluster_name
-    cluster_version = var.cluster_version
-
-    vpc_id          = var.vpc
-    subnet_ids = [aws_subnet.shahar_subnet-a.id, aws_subnet.shahar_subnet-b.id]
-
-    cluster_endpoint_public_access = true
-
-    cluster_addons = { coredns = { version = "v1.11.1-eksbuild.4" } 
-    aws-ebs-csi-driver = { version = "v1.35.0-eksbuild.1" } } 
-    eks_managed_node_group_defaults = {
-      instance_types = ["t2.small"]
-      }
-   
-    eks_managed_node_groups = {
-        shahar-nodegroup = {
-            desired_capacity = 2
-            max_capacity     = 3
-            min_capacity     = 1
-            instance_type   = "t2.small"
-        }
-    }
-    access_entries = { for user_name in var.aws_iam_users:
-      user_name => { principal_arn = data.aws_iam_user.current_users[user_name].arn}
-    } 
- }
-   output "user_arn" {
-      value = data.aws_iam_user.current_users["shahar-user"].arn
+# Output for User ARN
+output "user_arn" {
+  value = data.aws_iam_user.current_users["shoko-user"].arn
 }
