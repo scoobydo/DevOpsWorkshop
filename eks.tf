@@ -5,7 +5,7 @@ module "eks" {
   cluster_name                  = var.cluster_name
   cluster_version               = var.cluster_version
   vpc_id                        = var.vpc
-  subnet_ids                    = [aws_subnet.shoko_subnet-a.id, aws_subnet.shoko_subnet-b.id]
+  subnet_ids                    = [aws_subnet.shahar_subnet-a.id, aws_subnet.shahar_subnet-b.id]
   cluster_endpoint_public_access = true
 
   cluster_addons = {
@@ -16,9 +16,9 @@ module "eks" {
   eks_managed_node_groups = {
     shahar-nodegroup = {
       desired_capacity = 2
-      max_capacity     = 2
+      max_capacity     = 3
       min_capacity     = 1
-      instance_type   = "t2.micro"
+      instance_type   = "t2.small"
     }
   }
 
