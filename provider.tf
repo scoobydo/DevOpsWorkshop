@@ -1,7 +1,3 @@
-provider "aws" {
-  region = var.region
-}
-
 resource "aws_iam_role" "eks_cluster_role" {
   name = "${var.cluster_name}-role"
 
@@ -30,7 +26,20 @@ resource "aws_iam_role_policy_attachment" "eks_vpc_resource_policy" {
   role       = aws_iam_role.eks_cluster_role.name
 }
 
-# Output the EKS Cluster Role ARN
-output "eks_cluster_role_arn" {
-  value = aws_iam_role.eks_cluster_role.arn
+provider "helm" {
+  kubernetes {
+    config_path = "~/.kube/config"  
+    #onfig_context=var.cluster_name
+  }
+}
+
+resource "aws_iam_policy" "load_balancer_controller" {
+  name        = "Load_balancer_controller_shahar"  
+  description = "IAM policy for AWS Load Balancer Controller"
+  policy      = data.aws_iam_policy_document.load_balancer_controller.json
+}
+
+resource "aws_iam_role_policy_attachment" "load_balancer_controller_attachment" {
+  policy_arn = aws_iam_policy.load_balancer_controller.arn
+  role       = aws_iam_role.eks_cluster_role.name
 }

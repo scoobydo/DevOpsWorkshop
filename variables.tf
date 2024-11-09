@@ -25,29 +25,29 @@ variable "availability_zones" {
 variable "gateway_id" {
   description = "The ID of the NAT Gateway"
   type        = string
-  default     = "nat-0440e3c0e49d2649"  
+  default     = "nat-0440e3c0e49d26497"  
 }
 
 variable "aws_iam_users" {
   description = "List of IAM users who will have access to the EKS cluster"
   type        = list(string)
-  default     = ["shahar-user"]  
-}
-
-variable "allowed_principals" {
-  description = "List of AWS principals allowed to access the S3 bucket"
-  type        = list(string)
-  default     = ["arn:aws:iam::123456789012:root"]  # Replace with your allowed principals
+  default     = ["shahar-user", "shaiga", "yehiamc", "esterh"]  
 }
 
 variable "cluster_name" {
   description = "The name of the EKS cluster"
   type        = string
-  default     = "shahar-clusterr"  
+  default     = "shahar-cluster"  
 }
 
 variable "cluster_version" {
   description = "The version of the EKS cluster"
   type        = string
-  default     = "1.21"  # Default EKS version
+  default     = "1.29"  
+}
+
+variable "acm_certificate_arn" {
+  description = "The ARN of the ACM certificate for the load balancer"
+  type        = string
+  default     = "arn:aws:acm:eu-west-1:730335218716:certificate/8f4eeeea-9a1d-443c-a8c8-4de7f8b19aec."
 }

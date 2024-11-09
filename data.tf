@@ -5,22 +5,40 @@ data "aws_iam_user" "current_users" {
 
 data "aws_iam_policy_document" "bucket_policy" {
   statement {
-    actions = ["s3:GetObject", "s3:PutObject", "s3:ListBucket"]  # Added ListBucket action
-    resources = ["arn:aws:s3:::shoko-s3/*"]
+    sid    = "AllowSpasi"
+    effect = "Allow"
 
     principals {
       type        = "AWS"
-      identifiers = var.allowed_principals
+      identifiers = [for user in data.aws_iam_user.current_users : user.arn]  
     }
+
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:ListBucket",
+      "s3:DeleteObject",
+      #"s3:PutObjectAcl",  # Add this if you need to set ACLs
+      #"s3:GetBucketLocation"  # Add this if needed
+]
+    
+    resources = [
+      "arn:aws:s3:::shahar-s3",
+      "arn:aws:s3:::shahar-s3/*"
+    ]
   }
+}
 
+data "aws_iam_policy_document" "load_balancer_controller" {
   statement {
-    actions = ["s3:ListBucket"]  # Allow listing the bucket
-    resources = ["arn:aws:s3:::shoko-s3"]
-
-    principals {
-      type        = "AWS"
-      identifiers = var.allowed_principals
-    }
+    actions = [
+      "elasticloadbalancing:*",
+      "ec2:*",
+      "iam:PassRole",
+      "logs:*",
+      "autoscaling:*",
+      "tag:GetResources",
+    ]
+    resources = ["*"]
   }
 }

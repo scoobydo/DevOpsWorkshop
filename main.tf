@@ -54,7 +54,3 @@ resource "aws_eks_access_policy_association" "user_access" {
   }
 }
 
-# Output for User ARN
-output "user_arn" {
-  value = data.aws_iam_user.current_users["shahar-user"].arn
-}
