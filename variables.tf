@@ -31,7 +31,7 @@ variable "gateway_id" {
 variable "aws_iam_users" {
   description = "List of IAM users who will have access to the EKS cluster"
   type        = list(string)
-  default     = ["shahar-user", "shaiga", "yehiamc", "esterh"]  
+  default     = ["shahar-user"]  
 }
 
 variable "cluster_name" {
