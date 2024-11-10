@@ -14,7 +14,7 @@ resource "helm_release" "aws_load_balancer_controller" {
     name  = "serviceAccount.create"
     value = "false"
   }
-#test
+#test1
   set {
     name  = "serviceAccount.name"
     value = "aws-load-balancer-controller"
