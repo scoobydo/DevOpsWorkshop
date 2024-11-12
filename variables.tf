@@ -49,5 +49,5 @@ variable "cluster_version" {
 variable "acm_certificate_arn" {
   description = "The ARN of the ACM certificate for the load balancer"
   type        = string
-  default     = "arn:aws:acm:eu-west-1:730335218716:certificate/8f4eeeea-9a1d-443c-a8c8-4de7f8b19aec."
+  default     = "arn:aws:acm:eu-west-1:730335218716:certificate/8f4eeeea-9a1d-443c-a8c8-4de7f8b19aec"
 }

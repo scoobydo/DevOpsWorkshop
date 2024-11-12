@@ -1,24 +1,24 @@
-resource "helm_release" "aws_load_balancer_controller" {
-  name       = "aws-load-balancer-controller"
-  repository = "https://aws.github.io/eks-charts"
-  chart      = "aws-load-balancer-controller"
-  # version    = "2.9.2" 
-  timeout    = 600
+# resource "helm_release" "aws_load_balancer_controller" {
+#   name       = "aws-load-balancer-controller"
+#   repository = "https://aws.github.io/eks-charts"
+#   chart      = "aws-load-balancer-controller"
+#   #version    = "2.9.2"
+#   timeout = 1000
 
-  set {
-    name  = "clusterName"
-    value = var.cluster_name
-  }
+#   set {
+#     name  = "clusterName"
+#     value = var.cluster_name
+#   }
 
-  set {
-    name  = "serviceAccount.create"
-    value = "false"
-  }
-#test1
-  set {
-    name  = "serviceAccount.name"
-    value = "aws-load-balancer-controller"
-  }
+#   set {
+#     name  = "serviceAccount.create"
+#     value = "false"
+#   }
 
-  depends_on = [aws_iam_role.eks_cluster_role]  
-}
+#   set {
+#     name  = "serviceAccount.name"
+#     value = "aws-load-balancer-controller"
+#   }
+
+#   depends_on = [aws_iam_role.eks_cluster_role]
+# }
