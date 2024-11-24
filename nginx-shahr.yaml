@@ -16,11 +16,11 @@ spec:
         app: nginx-app
     spec:
       containers:
-        - name: shahar-continer
+        - name: shahar-container  # Corrected typo
           image: nginx
           ports:
-            - containerPort: 80
-            - containerPort: 443
+            - containerPort: 80  # Nginx default port
+            - containerPort: 443  # For HTTPS
 ---
 apiVersion: v1
 kind: Service
@@ -42,11 +42,12 @@ spec:
   type: LoadBalancer
   ports:
     - name: "http"
-      port: 8080
-      targetPort: 80
+      port: 80  # Exposing HTTP on port 80
+      targetPort: 80  # Forwarding to container's port 80
       protocol: TCP
     - name: "https"
-      port: 443
+      port: 443  # Exposing HTTPS on port 443
+      targetPort: 443  # Forwarding to container's port 443
       protocol: TCP
   selector:
     app: nginx-app

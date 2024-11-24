@@ -54,3 +54,12 @@ resource "aws_eks_access_policy_association" "user_access" {
   }
 }
 
+# Create an A record for the www subdomain
+resource "aws_route53_record" "www" {
+  zone_id = data.aws_route53_zone.main.zone_id
+  name     = "shahar.${var.domain_name}"
+  type     = "CNAME"
+  ttl      = 60
+  records  = ["a0b4d551fdfed4341b65ca9886c97794-d5e704ccacabd7c1.elb.eu-west-1.amazonaws.com"]
+}
+

@@ -35,10 +35,27 @@ data "aws_iam_policy_document" "load_balancer_controller" {
       "elasticloadbalancing:*",
       "ec2:*",
       "iam:PassRole",
-      "logs:*",
-      "autoscaling:*",
-      "tag:GetResources",
+      "acm:DescribeCertificate",
+      "acm:ListCertificates",
+      "acm:RequestCertificate",
+      "acm:DeleteCertificate",
+      "route53:ChangeResourceRecordSets",
+      "route53:ListResourceRecordSets",
+      "route53:ListHostedZones",
+      "route53:GetHostedZone",
+      "cloudwatch:PutMetricData",
+      "cloudwatch:GetMetricData",
+      "cloudwatch:GetMetricStatistics",
+      "cloudwatch:ListMetrics",
+      "cloudwatch:DescribeAlarms",
+      "cloudwatch:PutMetricAlarm",
+      "cloudwatch:DeleteAlarms",
     ]
     resources = ["*"]
   }
+}
+
+# Data block to reference the existing Route 53 Hosted Zone
+data "aws_route53_zone" "main" {
+  name = var.domain_name
 }

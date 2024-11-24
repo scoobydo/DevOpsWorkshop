@@ -51,3 +51,9 @@ variable "acm_certificate_arn" {
   type        = string
   default     = "arn:aws:acm:eu-west-1:730335218716:certificate/8f4eeeea-9a1d-443c-a8c8-4de7f8b19aec"
 }
+
+variable "domain_name" {
+  description = "crate my domin"
+  type        = string
+  default     = "wix-devops-workshop.com"
+}
